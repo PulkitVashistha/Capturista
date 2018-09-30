@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "113595842094",
+    "firebase_url": "https://capturista-79d0d.firebaseio.com",
+    "project_id": "capturista-79d0d",
+    "storage_bucket": "capturista-79d0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113595842094:android:2b9dcec8fd6d49c2",
+        "android_client_info": {
+          "package_name": "com.example.pulkit.capturista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113595842094-ukl9l2hd87qghio621cm2g5ark6ton4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pulkit.capturista",
+            "certificate_hash": "60cff0467c1b303202dc045510ad6055258ea196"
+          }
+        },
+        {
+          "client_id": "113595842094-5lr0fbgdg467phh4ilnehhv5t2dr9muu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjkaMfqZaGRB7weOdYh6ViLWj3-xqjtGM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113595842094-5lr0fbgdg467phh4ilnehhv5t2dr9muu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
