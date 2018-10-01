@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/activity_margin_content"
-        android:paddingTop="@dimen/activity_margin_content"/>
+        android:paddingTop="@dimen/activity_margin_content"
+        android:background="#5b5b5b"/>
 
     <ProgressBar
         android:id="@+id/main_progress"

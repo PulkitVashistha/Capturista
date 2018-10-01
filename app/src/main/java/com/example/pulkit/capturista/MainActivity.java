@@ -1,5 +1,6 @@
 package com.example.pulkit.capturista;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,14 +14,22 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -28,7 +37,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+
 import com.example.pulkit.capturista.Image;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private StorageReference mstorageReference;
 
-    private static final String TAG = "MainActivity";
+    public static final String TAG = "MainActivity";
 
     PaginationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -60,7 +71,36 @@ public class MainActivity extends AppCompatActivity {
         rv = (RecyclerView) findViewById(R.id.main_recycler);
         progressBar = (ProgressBar) findViewById(R.id.main_progress);
 
-        adapter = new PaginationAdapter(this);
+        loadFirstPage();
+
+
+        // mocking network delay for API call
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                loadFirstPage();
+//            }
+//        }, 1000);
+
+    }
+
+    public void databaseDone(ArrayList<Image> images,boolean isFirst) {
+        adapter = new PaginationAdapter(this, images);
+        if(isFirst){
+            progressBar.setVisibility(View.GONE);
+
+            if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+            else isLastPage = true;
+        }else {
+            adapter.removeLoadingFooter();
+            isLoading = false;
+
+//        adapter.addAll(images);
+
+            if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+            else isLastPage = true;
+        }
+
 
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
@@ -99,42 +139,41 @@ public class MainActivity extends AppCompatActivity {
                 return isLoading;
             }
         });
-
-
-        // mocking network delay for API call
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadFirstPage();
-            }
-        }, 1000);
-
     }
 
 
     private void loadFirstPage() {
         Log.d(TAG, "loadFirstPage: ");
-        List<Image> images = Image.createImages();
-        progressBar.setVisibility(View.GONE);
-        adapter.addAll(images);
-
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        Image.createImages(this,true);
 
     }
 
     private void loadNextPage() {
         Log.d(TAG, "loadNextPage: " + currentPage);
-        List<Image> images = Image.createImages();
+        Image.createImages(this,false);
 
-        adapter.removeLoadingFooter();
-        isLoading = false;
-
-        adapter.addAll(images);
-
-        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
     }
+
+//    public void setCardListener(final List<Image> images){
+//
+//        rv.setOnClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                //We are passing Bundle to activity, these lines will animate when we laucnh activity
+//                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,
+//                        Pair.create(view,"selectedMovie")
+//                ).toBundle();
+//
+//                Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
+//                intent.putExtra("bg",images.get(i).getUri());
+//                intent.putExtra("cover",images.get(i).getTitle());
+//                startActivity(intent,bundle);
+//
+//            }
+//        });
+//    }
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {

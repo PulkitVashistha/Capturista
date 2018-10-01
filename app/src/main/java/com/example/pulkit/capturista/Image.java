@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Movie;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,15 +27,15 @@ import java.util.List;
 public class Image {
 
     private String title;
-    private Uri mUri;
+    private String uri;
 
-    public Image(){
+    public Image() {
         //empty constructor
     }
 
-    public Image(String title, Uri mUri){
+    public Image(String title, String mUri) {
         this.title = title;
-        this.mUri = mUri;
+        this.uri = mUri;
     }
 
 
@@ -46,12 +47,12 @@ public class Image {
         this.title = title;
     }
 
-    public Uri getUri() {
-        return mUri;
+    public String getUri() {
+        return uri;
     }
 
-    public void setUri(Uri mUri) {
-        this.mUri = mUri;
+    public void setUri(String mUri) {
+        this.uri = mUri;
     }
 //    public static List<Image> createImages(int itemCount) {
 //        List<Image> images = new ArrayList<>();
@@ -64,31 +65,34 @@ public class Image {
 //        return null;
 //    }
 
-    public static List<Image> createImages() {
+    static MainActivity context;
+    static boolean isFirst;
+    public static List<Image> createImages(MainActivity context, final boolean isFirst) {
 
+        Image.context = context;
+        Image.isFirst=isFirst;
         DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("images");
-        final List<Image> images = new ArrayList<>();
+        final ArrayList<Image> images = new ArrayList<>();
 
-        try {
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-            mDatabaseRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                        Image image = postSnapshot.getValue(Image.class);
-                        images.add(image);
-                    }
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Image image = new Image(postSnapshot.getKey(),
+                            postSnapshot.getValue().toString());
+                    images.add(image);
+                    Image.context.databaseDone(images,isFirst);
+                    Log.d(MainActivity.TAG, "Image: " + image.title + ", " + image.uri);
                 }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-//                    Toast.makeText(this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            });
+            }
 
-        } catch (Exception e) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(MainActivity.TAG, "Error: " + databaseError.getMessage());
+            }
+        });
 
-        }
         return images;
     }
 }

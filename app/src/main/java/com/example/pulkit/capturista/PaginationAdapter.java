@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +26,9 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private boolean isLoadingAdded = false;
 
-    public PaginationAdapter(Context context) {
+    public PaginationAdapter(Context context,ArrayList<Image> images) {
         this.context = context;
-        images = new ArrayList<>();
+        this.images = new ArrayList<>(images);
     }
 
     public List<Image> getImages() {
@@ -73,12 +75,17 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 imageVH.textView.setText(image.getTitle());
 
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), image.getUri());
-                    imageVH.imageView.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                try{
+                    Glide.with(context).load(image.getUri()).into(imageVH.imageView);
+                }catch (Exception ignored){
                 }
+
+//                try {
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), image.getUri());
+//                    imageVH.imageView.setImageBitmap(bitmap);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
 
                 break;
