@@ -23,8 +23,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerInside"
                 android:id="@+id/cover_bg_details"
+                android:adjustViewBounds="true"
                 android:transitionName="selectedMovie"/>
 
             <View
@@ -37,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="The Revenant"
                 android:id="@+id/txt_movie_details"
                 android:singleLine="true"
                 android:layout_marginLeft="10dp"
@@ -46,18 +45,18 @@
                 android:layout_alignBottom="@+id/cover_bg_details"
                 android:layout_marginBottom="10dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="&quot;While exploring the uncharted wilderness in 1823, frontiersman Hugh Glass (Leonardo DiCaprio) sustains life-threatening injuries from a brutal bear attack."
-                android:id="@+id/txt_plot_details"
-                android:layout_marginLeft="10dp"
-                android:paddingRight="10dp"
-                android:textSize="12sp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/cover_bg_details"
-                />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="&quot;While exploring the uncharted wilderness in 1823, frontiersman Hugh Glass (Leonardo DiCaprio) sustains life-threatening injuries from a brutal bear attack."-->
+                <!--android:id="@+id/txt_plot_details"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:textSize="12sp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:layout_below="@+id/cover_bg_details"-->
+                <!--/>-->
 
             <TextView
                 android:layout_width="wrap_content"

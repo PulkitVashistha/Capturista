@@ -1,10 +1,16 @@
 package com.example.pulkit.capturista;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +26,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
+    private PaginationAdapter pContext;
 
     private List<Image> images;
     private Context context;
@@ -66,6 +73,8 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        position = ((ImageVH)holder).pos;
 
         Image image = images.get(position);
 
@@ -175,10 +184,26 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     protected class ImageVH extends RecyclerView.ViewHolder {
         private TextView textView;
         private ImageView imageView;
-
+        MainActivity mContext;
+        int pos;
         public ImageVH(View itemView) {
             super(itemView);
-
+            if(itemView!=null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(mContext,
+                                    Pair.create(v, "selectedImage")
+                            ).toBundle();
+                            Intent intent = new Intent(context, DetailsActivity.class);
+                            intent.putExtra("bg", images.get(pos).getUri());
+                            intent.putExtra("cover", images.get(pos).getTitle());
+                            v.getContext().startActivity(intent, bundle);
+                        }
+                    }
+                });
+            }
             textView = (TextView) itemView.findViewById(R.id.text);
             imageView = (ImageView) itemView.findViewById(R.id.image);
         }

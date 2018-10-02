@@ -26,8 +26,6 @@ public class DetailsActivity extends AppCompatActivity {
         CardView cardView = (CardView) findViewById(R.id.card_view);
         TextView movie = (TextView) findViewById(R.id.txt_movie_details);
         ImageView movie_bg = (ImageView) findViewById(R.id.cover_bg_details);
-        TextView plot = (TextView) findViewById(R.id.txt_plot_details);
-
 
         //These are lines helping Details_Card To Animate
         //===============================================
@@ -53,8 +51,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Picasso.with(this).load(intent.getIntExtra("bg",1)).into(movie_bg);
 //        Picasso.with(this).load(intent.getIntExtra("cover",1)).into(movie_cover);
-        movie.setText(intent.getStringExtra("title"));
-        plot.setText(intent.getStringExtra("plot"));
+        movie.setText(intent.getStringExtra("cover"));
 
     }
 }
